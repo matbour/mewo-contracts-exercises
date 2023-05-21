@@ -32,7 +32,7 @@ pragma solidity ^0.8.20;
 import { Test } from "forge-std/Test.sol";
 import { $name } from "./$name.sol";
 
-contract ${name}Test {
+contract ${name}Test is Test {
   $name exercise;
 
   function setUp() public {
