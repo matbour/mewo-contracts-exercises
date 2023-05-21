@@ -10,7 +10,7 @@ cbor_metadata = false
 [profile.default.fuzz]
 runs = 256
 
-[profile.intense.fuzz]
+[profile.ci.fuzz]
 runs = 5_000
 
 [fmt]
