@@ -1,0 +1,17 @@
+{
+  "editor.formatOnSave": true,
+  "solidity.compileUsingRemoteVersion": "v0.8.19",
+  "solidity.packageDefaultDependenciesContractsDirectory": "src",
+  "solidity.packageDefaultDependenciesDirectory": "lib",
+  "solidity.formatter": "forge",
+  "git.detectSubmodules": false,
+  "git.ignoreSubmodules": true,
+  "git.detectSubmodulesLimit": 0,
+  "solidity.solhintRules": {
+    "extends": "solhint:default",
+    "rules": {
+      "max-line-length": ["error", 140],
+      "func-name-mixedcase": "off"
+    }
+  }
+}
