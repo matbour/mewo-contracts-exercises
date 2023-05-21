@@ -2,9 +2,10 @@
 
 ## General instructions
 
-1. Install Foundry ands the necessary toolchain
-2. Clone this repository with git
-3. Install the Foundry dependencies with
+1. Install [Foundry](https://book.getfoundry.sh/) and the necessary toolchain
+2. [Fork](https://github.com/mathieu-bour/mewo-contracts-exercises/fork) this repository on GitHub
+3. Clone the forked repository with git
+4. Install the [Foundry](https://book.getfoundry.sh/) dependencies with
 
 ```shell
 forge install
@@ -23,7 +24,7 @@ forge test --match-path 'src/XXX/*.sol'
 forge t --mp 'src/XXX/*.sol'
 ```
 
-Example: for the exercise 000:
+Example: for the [exercise 000](src/000/):
 
 ```shell
 forge test --match-path 'src/000/*.sol'
