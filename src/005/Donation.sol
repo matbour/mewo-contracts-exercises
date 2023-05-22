@@ -5,4 +5,10 @@ pragma solidity ^0.8.20;
 // - Only the account that deployed the contract is allowed to withdraw the funds via a `withdraw` function.
 // - User will be able to donate ether to the contract via `donate`. Zero donation should be rjected.
 // - Expose a `donated(address who)` function that allow to check how much an address has donated.
-contract Donation { }
+// Notes:
+// - You can get the balance of the contract with address(this).payable
+contract Donation {
+  function withdraw() public {
+    // payable(address(deployer)).transfer(address(this).balance);
+  }
+}
