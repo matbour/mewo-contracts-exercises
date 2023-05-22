@@ -9,4 +9,6 @@ pragma solidity ^0.8.20;
 // - balanceOf(address who) that returns the balance of the address `who`.
 // - transfer(address to, uint256 amount) that allow to transfer `amount` tokens to the address `to`. The sender must have enough tokens!
 // - mint(address to, uint256 amount) that allow to mint `amount` tokens to the address `to`. Only owner cam mint tokens.
-contract SimpleToken { }
+contract SimpleToken {
+  constructor(address _owner) { }
+}
