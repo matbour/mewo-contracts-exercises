@@ -4,23 +4,42 @@ pragma solidity ^0.8.20;
 import { ERC20 } from "openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
 
 abstract contract Bridgeable is ERC20 {
+  address bridge;
+
   error BridgeAlreadyIntialized();
   error OnlyBridge();
 
+  modifier onlyBridge() {
+    if (msg.sender != bridge) {
+      revert OnlyBridge();
+    }
+    _;
+  }
+
   /// Define the address of the bridge, who will become the only address allowed to mint/burn tokens.
   /// Only callable once.
-  function setBridge(address bridge) external virtual;
+  function setBridge(address _bridge) external {
+    if (bridge != address(0)) {
+      revert BridgeAlreadyIntialized();
+    }
 
-  function mint(address to, uint256 amount) external virtual;
+    bridge = _bridge;
+  }
 
-  function burn(address from, uint256 amount) external virtual;
+  function mint(address to, uint256 amount) external onlyBridge {
+    _mint(to, amount);
+  }
+
+  function burn(address from, uint256 amount) external onlyBridge {
+    _burn(from, amount);
+  }
 }
 
-contract Dev is ERC20 /*, Bridgeable */ {
+contract Dev is ERC20, Bridgeable {
   constructor() ERC20("Dev", "DEV") { }
 }
 
-contract Cyber is ERC20 /*, Bridgeable */ {
+contract Cyber is ERC20, Bridgeable {
   constructor() ERC20("Cyber", "CYBER") { }
 }
 
@@ -34,9 +53,21 @@ contract ERC20Bridge {
   Bridgeable dev;
   Bridgeable cyber;
 
-  constructor(address _dev, address _cyber) { }
+  constructor(address _dev, address _cyber) {
+    dev = Bridgeable(_dev);
+    cyber = Bridgeable(_cyber);
 
-  function swapDev(uint256 devAmount) public { }
+    dev.setBridge(address(this));
+    cyber.setBridge(address(this));
+  }
 
-  function swapCyber(uint256 cyberAmount) public { }
+  function swapDev(uint256 devAmount) public {
+    dev.burn(msg.sender, devAmount);
+    cyber.mint(msg.sender, devAmount * 3 / 2);
+  }
+
+  function swapCyber(uint256 cyberAmount) public {
+    cyber.burn(msg.sender, cyberAmount);
+    dev.mint(msg.sender, cyberAmount * 2 / 3);
+  }
 }

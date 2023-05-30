@@ -10,5 +10,29 @@ pragma solidity ^0.8.20;
 // - transfer(address to, uint256 amount) that allow to transfer `amount` tokens to the address `to`. The sender must have enough tokens!
 // - mint(address to, uint256 amount) that allow to mint `amount` tokens to the address `to`. Only owner cam mint tokens.
 contract SimpleToken {
-  constructor(address _owner) { }
+  mapping(address => uint256) public balanceOf;
+  address public owner;
+
+  constructor(address _owner) {
+    owner = _owner;
+  }
+
+  modifier onlyOwner() {
+    require(msg.sender == owner);
+    _;
+  }
+
+  function transferOwnership(address newOwner) public onlyOwner {
+    owner = newOwner;
+  }
+
+  function mint(address to, uint256 amount) public onlyOwner {
+    balanceOf[to] += amount;
+  }
+
+  function transfer(address to, uint256 amount) public {
+    require(balanceOf[msg.sender] >= amount);
+    balanceOf[msg.sender] -= amount;
+    balanceOf[to] += amount;
+  }
 }

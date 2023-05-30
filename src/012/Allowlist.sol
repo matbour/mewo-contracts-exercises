@@ -14,17 +14,41 @@ contract Allowlist {
   error OnlyOwner();
   error OnlyOperator();
 
-  constructor() { }
+  constructor() {
+    owner = msg.sender;
+  }
+
+  modifier onlyOwner() {
+    if (msg.sender != owner) {
+      revert OnlyOwner();
+    }
+    _;
+  }
+
+  modifier onlyOperator() {
+    if (!operators[msg.sender]) {
+      revert OnlyOperator();
+    }
+    _;
+  }
 
   /// @param who The address to add to the operators
-  function addOperator(address who) external { }
+  function addOperator(address who) external onlyOwner {
+    operators[who] = true;
+  }
 
   /// @param who The address to remove from the operators
-  function removeOperator(address who) external { }
+  function removeOperator(address who) external onlyOwner {
+    operators[who] = false;
+  }
 
   /// @param who The address to add to the allow list
-  function add(address who) external { }
+  function add(address who) external onlyOperator {
+    isAllowed[who] = true;
+  }
 
   /// @param who The address to remove to the allow list
-  function remove(address who) external { }
+  function remove(address who) external onlyOperator {
+    isAllowed[who] = false;
+  }
 }
